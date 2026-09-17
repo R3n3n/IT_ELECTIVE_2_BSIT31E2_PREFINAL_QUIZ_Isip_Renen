@@ -56,3 +56,4 @@ CodeCoverage/
 TestResult.xml
 nunit-*.xml
 /.idea/
+/ConsoleApp1/.vs/ConsoleApp1
