@@ -1,8 +1,35 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IReadOnlyList<Project>
+@{
+    ViewData["Title"] = "About";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<section class="about">
+    <h1>About this portfolio</h1>
+
+    <p class="lede">
+        I'm Renen Isip, a BSIT student. Most of what I build is in C# and .NET.
+        This site holds the coursework I've done for IT Elective Two, with the
+        repository for each project and a place for people to leave feedback.
+    </p>
+
+    <dl class="about-facts">
+        <dt>Projects listed</dt>
+        <dd>@Model.Count</dd>
+
+        <dt>Primary language</dt>
+        <dd>C#</dd>
+
+        <dt>GitHub</dt>
+        <dd><a href="https://github.com/R3n3n" rel="noopener noreferrer" target="_blank">github.com/R3n3n</a></dd>
+    </dl>
+
+    <h2>How this site is built</h2>
+    <p>
+        I made this with ASP.NET Core MVC. The projects are stored in a JSON file
+        and loaded when the app starts, and comments get saved so they're still
+        there the next time someone visits. You need to sign in to see anything,
+        since that was part of the assignment.
+    </p>
+
+    <p><a class="primary-link" asp-controller="Projects" asp-action="Index">Open the table of contents</a></p>
+</section>
