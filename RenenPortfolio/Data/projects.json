@@ -1,0 +1,80 @@
+[
+  {
+    "slug": "midterm-portfolio",
+    "title": "MVC Theory Exam Booklet",
+    "summary": "My theory exam booklet on the MVC pattern for Midterm Assignment 1.",
+    "description": "I completed this exam booklet for Midterm Assignment 1 to show my understanding of the MVC pattern. It covered controllers, views, and models, and how they worked together in an ASP.NET Core application.",
+    "repositoryUrl": "https://github.com/R3n3n/IT_ELECTIVE_2_Midterm_A1_Isip_Renen",
+    "thumbnailPath": "/img/thumbs/midterm-portfolio.png",
+    "language": "C#",
+    "category": "Midterm assignments",
+    "tags": [ "C#", "ASP.NET Core", "MVC" ],
+    "year": 2026,
+    "isFork": false
+  },
+  {
+    "slug": "ppop-store-pos",
+    "title": "Ppop Store POS",
+    "summary": "A point-of-sale system I built for a P-pop merch store.",
+    "description": "I built this point-of-sale app for a small P-pop merch store across three hands-on labs. H1 covered the product catalog and inventory, H2 added the checkout flow, and H3 added receipts and basic reporting.",
+    "repositoryUrl": "https://github.com/R3n3n/IT_ELECTIVE_2_MIDTERM_H1_H2_H3_Isip_Renen",
+    "thumbnailPath": "/img/thumbs/ppop-store-pos.png",
+    "language": "C#",
+    "category": "Midterm hands-on laboratories",
+    "tags": [ "C#", ".NET", "POS", "Inventory" ],
+    "year": 2026,
+    "isFork": false
+  },
+  {
+    "slug": "playlist-app",
+    "title": "Playlist App",
+    "summary": "A playlist manager I built during Midterm Quiz 2.",
+    "description": "I built this playlist manager during Midterm Quiz 2. It let a user create a playlist, add and remove songs, and reorder the list. I finished it in one sitting, under quiz conditions.",
+    "repositoryUrl": "https://github.com/R3n3n/IT_ELECTIVE_2_MIDTERM_Q2_Isip_Renen",
+    "thumbnailPath": "/img/thumbs/playlist-app.png",
+    "language": "C#",
+    "category": "Midterm quizzes",
+    "tags": [ "C#", ".NET", "Quiz" ],
+    "year": 2026,
+    "isFork": false
+  },
+  {
+    "slug": "lab-monitoring-system",
+    "title": "Lab Monitoring System",
+    "summary": "A system I built for tracking computer lab usage, for Midterm Exam Set 4.",
+    "description": "I built this for my midterm practical exam. It tracked who used a computer in the lab, on which machine, and logged each session. I built it against a fixed spec under exam conditions.",
+    "repositoryUrl": "https://github.com/R3n3n/IT_ELECTIVE_2_MIDTERM_EXAM_SET4_ISIP_RENEN",
+    "thumbnailPath": "/img/thumbs/lab-monitoring-system.png",
+    "language": "C#",
+    "category": "Midterm exams",
+    "tags": [ "C#", ".NET", "Exam", "Monitoring" ],
+    "year": 2026,
+    "isFork": false
+  },
+  {
+    "slug": "prefinals-group-project",
+    "title": "Help Desk System",
+    "summary": "A collaborative IT support helpdesk built to track and manage customer issues.",
+    "description": "Our collaborative prefinal project. Working on this was a good lesson in team dynamics, we had to figure out our file structures and coding conventions early so we could merge our separate parts into one working app without breaking everything.",
+    "repositoryUrl": "https://github.com/R3n3n/IT_ELECTIVE_PREFINALS_PROJECT",
+    "thumbnailPath": "/img/thumbs/prefinals-group-project.png",
+    "language": "C#",
+    "category": "Prefinal project",
+    "tags": [ "C#", ".NET", "Team project" ],
+    "year": 2026,
+    "isFork": false
+  },
+  {
+    "slug": "prefinal-answer-booklet",
+    "title": "Prefinal Answer Booklet",
+    "summary": "My written answers for the prefinal exam.",
+    "description": "This was not an app, just the written answer booklet from my prefinal exam. I included it so the portfolio covered the whole term, not just the code projects.",
+    "repositoryUrl": "https://github.com/R3n3n/IT_ELECTIVE_2_BSIT31E2_PREFINAL_EXAM_Isip_Renen",
+    "thumbnailPath": "/img/thumbs/prefinal-answer-booklet.png",
+    "language": "C#",
+    "category": "Prefinal exams",
+    "tags": [ "C#", "Exam", "Written" ],
+    "year": 2026,
+    "isFork": false
+  }
+]
