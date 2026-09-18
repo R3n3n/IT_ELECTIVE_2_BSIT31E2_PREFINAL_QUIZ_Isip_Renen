@@ -1,49 +1,112 @@
-﻿<!DOCTYPE html>
+﻿@{
+    var signedIn = User.Identity?.IsAuthenticated == true;
+    var bare = ViewData["Bare"] as bool? ?? false;
+    var controller = ViewContext.RouteData.Values["controller"] as string;
+    var action = ViewContext.RouteData.Values["action"] as string;
+    var onContents = controller == "Projects";
+    var onAbout = controller == "Home" && action == "Index";
+    var who = User.Identity?.Name ?? string.Empty;
+    var initial = who.Length > 0 ? who.Substring(0, 1).ToUpperInvariant() : "?";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - RenenPortfolio</title>
-    <script type="importmap"></script>
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="color-scheme" content="dark" />
+    <title>@ViewData["Title"] &mdash; Renen Isip</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/RenenPortfolio.styles.css" asp-append-version="true" />
 </head>
-<body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">RenenPortfolio</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </nav>
-    </header>
-    <div class="container">
-        <main role="main" class="pb-3">
-            @RenderBody()
-        </main>
-    </div>
+<body class="@(bare ? "bare" : "shell")">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2026 - RenenPortfolio - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-        </div>
-    </footer>
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    @if (!bare)
+    {
+        <a class="skip" href="#main">Skip to content</a>
+
+        <header class="rail">
+            <div class="rail-identity">
+                <a class="mark" asp-controller="Projects" asp-action="Index">
+                    <span class="mark-initials">RI</span>
+                    <span class="mark-name">Renen Isip</span>
+                </a>
+                <p class="rail-role">A portfolio of BSIT C# &amp; .NET projects.</p>
+            </div>
+
+            <nav class="rail-nav" aria-label="Main">
+                <a class="@(onContents ? "is-current" : null)" asp-controller="Projects" asp-action="Index">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <line x1="9" y1="6" x2="20" y2="6" />
+                        <line x1="9" y1="12" x2="20" y2="12" />
+                        <line x1="9" y1="18" x2="20" y2="18" />
+                        <line x1="4" y1="6" x2="4.01" y2="6" />
+                        <line x1="4" y1="12" x2="4.01" y2="12" />
+                        <line x1="4" y1="18" x2="4.01" y2="18" />
+                    </svg>
+                    <span>Contents</span>
+                </a>
+
+                <a class="@(onAbout ? "is-current" : null)" asp-controller="Home" asp-action="Index">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <circle cx="12" cy="8" r="3.5" />
+                        <path d="M4.5 20a7.5 7.5 0 0 1 15 0" />
+                    </svg>
+                    <span>About this portfolio</span>
+                </a>
+
+                <a href="https://github.com/R3n3n" rel="noopener noreferrer" target="_blank">
+                    <svg viewBox="0 0 24 24" aria-hidden="true">
+                        <path d="M9 19c-4.3 1.4-4.3-2.5-6-3m12 5v-3.5c0-1 .1-1.4-.5-2 2.8-.3 5.5-1.4 5.5-6a4.6 4.6 0 0 0-1.3-3.2 4.3 4.3 0 0 0-.1-3.2s-1.1-.3-3.5 1.3a12 12 0 0 0-6.2 0C6.5 2.8 5.4 3.1 5.4 3.1a4.3 4.3 0 0 0-.1 3.2A4.6 4.6 0 0 0 4 9.5c0 4.6 2.7 5.7 5.5 6-.6.6-.6 1.2-.5 2V21" />
+                    </svg>
+                    <span>GitHub Repository</span>
+                </a>
+            </nav>
+
+            <div class="rail-out">
+                @if (signedIn)
+                {
+                    <span class="rail-who">
+                        <span class="rail-avatar" aria-hidden="true">@initial</span>
+                        <span>@who</span>
+                    </span>
+                    <form class="rail-form" asp-controller="Account" asp-action="Logout" method="post">
+                        <button type="submit" class="rail-signout">
+                            <svg viewBox="0 0 24 24" aria-hidden="true">
+                                <path d="M10 20H5a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1h5" />
+                                <polyline points="16 16 20 12 16 8" />
+                                <line x1="20" y1="12" x2="9" y2="12" />
+                            </svg>
+                            <span>Sign Out</span>
+                        </button>
+                    </form>
+                }
+                else
+                {
+                    <a class="rail-signout" asp-controller="Account" asp-action="Login">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <circle cx="8" cy="12" r="3" />
+                            <path d="M11 12h10l-2 2m2-2-2-2" />
+                        </svg>
+                        <span>Sign In</span>
+                    </a>
+                }
+            </div>
+        </header>
+    }
+
+    <main id="main">
+        @RenderBody()
+    </main>
+
+    @if (!bare)
+    {
+        <footer class="foot">
+            <p>Portfolio built with ASP.NET Core MVC. Source on <a href="https://github.com/R3n3n" rel="noopener noreferrer" target="_blank">github.com/R3n3n</a>.</p>
+        </footer>
+    }
+
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
 </body>
