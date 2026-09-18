@@ -1,0 +1,181 @@
+﻿@model ProjectDetailViewModel
+@inject IWebHostEnvironment Env
+@{
+    ViewData["Title"] = Model.Project.Title;
+    var p = Model.Project;
+
+    var hasShot = !string.IsNullOrWhiteSpace(p.ThumbnailPath)
+                  && System.IO.File.Exists(System.IO.Path.Combine(Env.WebRootPath, p.ThumbnailPath.TrimStart('/')));
+}
+
+<nav aria-label="Breadcrumb">
+    <ol class="crumbs">
+        <li><a asp-controller="Home" asp-action="Index">Home</a></li>
+        <li><a asp-action="Index">Contents</a></li>
+        <li><span aria-current="page">@p.Title</span></li>
+    </ol>
+</nav>
+
+<div class="detail-layout">
+
+    <div>
+        <article class="card detail">
+
+            <header class="detail-head">
+                <h1>@p.Title</h1>
+                <a class="back" asp-action="Index">Back to contents</a>
+            </header>
+
+            <div class="detail-top">
+                @if (hasShot)
+                {
+                    <img class="detail-shot" src="@p.ThumbnailPath" alt="Screenshot of @p.Title" loading="lazy" />
+                }
+                else
+                {
+                    <div class="shot-empty">
+                        <svg viewBox="0 0 24 24" aria-hidden="true">
+                            <rect x="3" y="6" width="18" height="13" rx="2" />
+                            <circle cx="12" cy="12.5" r="3" />
+                            <path d="M9 6l1.2-2h3.6L15 6" />
+                        </svg>
+                        <span>Screenshot coming soon</span>
+                    </div>
+                }
+
+                <aside class="detail-facts">
+                    <dl>
+                        <dt>Repository</dt>
+                        <dd><a href="@p.RepositoryUrl" rel="noopener noreferrer" target="_blank">View on GitHub</a></dd>
+
+                        <dt>Language</dt>
+                        <dd>@p.Language</dd>
+
+                        <dt>Year</dt>
+                        <dd>@p.Year</dd>
+
+                        <dt>Source</dt>
+                        <dd>@(p.IsFork ? "Forked from an instructor template" : "Started from scratch")</dd>
+                    </dl>
+                </aside>
+            </div>
+
+            <div class="detail-prose">
+                <p>@p.Description</p>
+            </div>
+
+            @if (p.Tags.Any())
+            {
+                <ul class="tags">
+                    @foreach (var tag in p.Tags)
+                    {
+                        <li>@tag</li>
+                    }
+                </ul>
+            }
+        </article>
+
+        <nav class="pager" aria-label="Project navigation">
+            @if (Model.Previous is not null)
+            {
+                <a class="pager-prev" asp-action="Details" asp-route-id="@Model.Previous.Slug">
+                    <span>Previous:</span> @Model.Previous.Title
+                </a>
+            }
+            @if (Model.Next is not null)
+            {
+                <a class="pager-next" asp-action="Details" asp-route-id="@Model.Next.Slug">
+                    <span>Next:</span> @Model.Next.Title
+                </a>
+            }
+        </nav>
+
+        <section class="card comments" id="comments">
+            <h2>Comments <span class="comments-count">@Model.Comments.Count</span></h2>
+
+            @if (TempData["CommentPosted"] is string flash)
+            {
+                <p class="flash" role="status">@flash</p>
+            }
+
+            <form class="comment-form" asp-action="AddComment" method="post">
+                <input type="hidden" asp-for="NewComment.ProjectSlug" value="@p.Slug" />
+
+                <div asp-validation-summary="ModelOnly" class="field-errors"></div>
+
+                <div class="field">
+                    <label asp-for="NewComment.Author">Your name</label>
+                    <input asp-for="NewComment.Author" maxlength="60" autocomplete="name" placeholder="Your name" />
+                    <span asp-validation-for="NewComment.Author" class="field-error"></span>
+                </div>
+
+                <div class="field">
+                    <label asp-for="NewComment.Body">Comment</label>
+                    <textarea asp-for="NewComment.Body" rows="4" maxlength="1000"
+                              placeholder="What did you think of this project?"></textarea>
+                    <span asp-validation-for="NewComment.Body" class="field-error"></span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="submit" class="primary">Post comment</button>
+                </div>
+            </form>
+
+            @if (!Model.Comments.Any())
+            {
+                <p class="comments-empty">No comments on this project yet. Yours would be the first.</p>
+            }
+            else
+            {
+                <ul class="comment-list">
+                    @foreach (var comment in Model.Comments)
+                    {
+                        <li class="comment">
+                            <div class="comment-head">
+                                <span class="comment-author">@comment.Author</span>
+                                <time datetime="@comment.PostedAt.ToString("o")">
+                                    @comment.PostedAt.ToLocalTime().ToString("d MMM yyyy, HH:mm")
+                                </time>
+                            </div>
+                            <p class="comment-body">@comment.Body</p>
+                            <form asp-action="DeleteComment" method="post" class="comment-delete">
+                                <input type="hidden" name="id" value="@comment.Id" />
+                                <input type="hidden" name="projectSlug" value="@p.Slug" />
+                                <button type="submit" class="link-button">Delete</button>
+                            </form>
+                        </li>
+                    }
+                </ul>
+            }
+        </section>
+    </div>
+
+    <aside class="side-toc" aria-label="All contents">
+        <h2>All Contents</h2>
+        <ol class="side-list">
+            @{
+                var n = 0;
+            }
+            @foreach (var item in Model.AllProjects)
+            {
+                n++;
+                var count = Model.CommentCounts.TryGetValue(item.Slug, out var c) ? c : 0;
+                var current = string.Equals(item.Slug, p.Slug, StringComparison.OrdinalIgnoreCase);
+                <li>
+                    <a class="side-link @(current ? "is-current" : null)"
+                       asp-action="Details" asp-route-id="@item.Slug"
+                       aria-current="@(current ? "page" : null)">
+                        <span class="side-title">@n. @item.Title</span>
+                        <span class="side-count @(count > 0 ? "has-comments" : null)">@count</span>
+                        <span class="side-summary">@item.Summary</span>
+                    </a>
+                </li>
+            }
+        </ol>
+    </aside>
+
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

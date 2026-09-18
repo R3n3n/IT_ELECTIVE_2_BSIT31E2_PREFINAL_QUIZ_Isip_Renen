@@ -1,0 +1,81 @@
+﻿@model TableOfContentsViewModel
+@inject IWebHostEnvironment Env
+@{
+    ViewData["Title"] = "Contents";
+    var counter = 0;
+}
+
+<section class="contents">
+
+    <div class="contents-head">
+        <h1>Contents</h1>
+        <p class="contents-blurb">
+            Everything I have built for IT Elective Two. Open any entry
+            for the write-up, the repository link, and its comment thread.
+        </p>
+
+        <form class="find" asp-action="Index" method="get" role="search">
+            <label for="q">Find a project</label>
+            <input id="q" name="q" type="search" value="@Model.Query"
+                   placeholder="Title, tag or category" autocomplete="off" />
+            <button type="submit">Search</button>
+            @if (!string.IsNullOrWhiteSpace(Model.Query))
+            {
+                <a class="find-clear" asp-action="Index">Clear</a>
+            }
+        </form>
+    </div>
+
+    @if (!Model.Sections.Any())
+    {
+        <div class="empty">
+            <h2>Nothing matches &ldquo;@Model.Query&rdquo;</h2>
+            <p>Try a shorter search, or <a asp-action="Index">list all @Model.TotalProjects projects</a>.</p>
+        </div>
+    }
+    else
+    {
+        foreach (var group in Model.Sections)
+        {
+            <section class="toc-group">
+                <h2 class="toc-group-title">@group.Category</h2>
+
+                <ol class="toc">
+                    @foreach (var project in group.Projects)
+                    {
+                        counter++;
+                        var count = Model.CommentCounts.TryGetValue(project.Slug, out var c) ? c : 0;
+                        var hasThumb = !string.IsNullOrWhiteSpace(project.ThumbnailPath)
+                                       && System.IO.File.Exists(System.IO.Path.Combine(Env.WebRootPath, project.ThumbnailPath.TrimStart('/')));
+                        <li class="toc-row">
+                            <a class="toc-link" asp-action="Details" asp-route-id="@project.Slug">
+                                <span class="toc-num" aria-hidden="true">@counter</span>
+                                @if (hasThumb)
+                                {
+                                    <img class="toc-thumb" src="@project.ThumbnailPath" alt="" width="96" height="64" loading="lazy" />
+                                }
+                                else
+                                {
+                                    <span class="toc-thumb shot-empty" aria-hidden="true">
+                                        <svg viewBox="0 0 24 24">
+                                            <rect x="3" y="6" width="18" height="13" rx="2" />
+                                            <circle cx="12" cy="12.5" r="3" />
+                                            <path d="M9 6l1.2-2h3.6L15 6" />
+                                        </svg>
+                                    </span>
+                                }
+                                <span class="toc-text">
+                                    <span class="toc-title">@project.Title</span>
+                                    <span class="toc-summary">@project.Summary</span>
+                                </span>
+                                <span class="toc-meta">
+                                    <span class="toc-count">@count @(count == 1 ? "comment" : "comments")</span>
+                                </span>
+                            </a>
+                        </li>
+                    }
+                </ol>
+            </section>
+        }
+    }
+</section>
