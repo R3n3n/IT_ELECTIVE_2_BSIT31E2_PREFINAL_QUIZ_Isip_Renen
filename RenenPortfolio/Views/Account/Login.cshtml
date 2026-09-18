@@ -1,0 +1,85 @@
+﻿@model LoginViewModel
+@{
+    ViewData["Title"] = "Sign in";
+    ViewData["Bare"] = true;
+}
+
+<div class="gate">
+    <div class="gate-panel">
+        <a class="gate-brand" asp-controller="Projects" asp-action="Index">
+            <span class="gate-mark">RI</span>
+            <span class="gate-brand-name">Renen Isip</span>
+        </a>
+
+        <div class="gate-lead">
+            <h1>Every project I built for IT Elective Two.</h1>
+            <p class="gate-blurb">
+                Console apps and ASP.NET Core work in C#, kept in the order they were
+                assigned, each with the write-up and the repository behind it.
+            </p>
+        </div>
+
+        <ul class="gate-points">
+            <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M4 5h16M4 12h16M4 19h10" />
+                </svg>
+                <span>Prelim assignments and hands-on laboratories, grouped by type</span>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M10 13a4 4 0 0 0 6 .5l2.5-2.5a4 4 0 0 0-5.7-5.7L11.5 6.6" />
+                    <path d="M14 11a4 4 0 0 0-6-.5L5.5 13a4 4 0 0 0 5.7 5.7l1.3-1.3" />
+                </svg>
+                <span>A GitHub link on every entry, so the source is one click away</span>
+            </li>
+            <li>
+                <svg viewBox="0 0 24 24" aria-hidden="true">
+                    <path d="M21 12a8 8 0 0 1-8 8H5l-1.5 1.5a.7.7 0 0 1-1.2-.5V12a8 8 0 0 1 8-8h2a8 8 0 0 1 8 8z" />
+                </svg>
+                <span>A comment thread on each project once you are signed in</span>
+            </li>
+        </ul>
+
+        <p class="gate-foot">
+            Built with ASP.NET Core MVC &middot;
+            <a href="https://github.com/R3n3n" rel="noopener noreferrer" target="_blank">github.com/R3n3n</a>
+        </p>
+    </div>
+
+    <div class="gate-form">
+        <h2>Sign in</h2>
+        <p class="gate-intro">Use the account from the project README.</p>
+
+        <form asp-action="Login" method="post" novalidate>
+            <input type="hidden" asp-for="ReturnUrl" />
+
+            <div asp-validation-summary="ModelOnly" class="field-errors"></div>
+
+            <div class="field">
+                <label asp-for="Username"></label>
+                <input asp-for="Username" autocomplete="username" placeholder="Username" autofocus />
+                <span asp-validation-for="Username" class="field-error"></span>
+            </div>
+
+            <div class="field">
+                <label asp-for="Password"></label>
+                <input asp-for="Password" type="password" autocomplete="current-password" placeholder="Password" />
+                <span asp-validation-for="Password" class="field-error"></span>
+            </div>
+
+            <label class="check">
+                <input asp-for="RememberMe" type="checkbox" />
+                <span>Keep me signed in</span>
+            </label>
+
+            <button type="submit" class="primary">Sign in</button>
+        </form>
+
+        <p class="gate-hint">Credentials are recorded in the project README.</p>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}
